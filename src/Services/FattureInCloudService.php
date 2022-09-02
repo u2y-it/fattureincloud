@@ -85,8 +85,8 @@ class FattureInCloudService
         try {
             $response = Http::asForm()->post('https://api-v2.fattureincloud.it/oauth/token', [
                 'grant_type' => 'refresh_token',
-                'client_id' => config('hubspot.client_id'),
-                'client_secret' => config('hubspot.client_secret'),
+                'client_id' => config('fattureincloud.client_id'),
+                'client_secret' => config('fattureincloud.client_secret'),
                 'refresh_token' => $refresh_token
             ]);
 
