@@ -13,7 +13,7 @@ class FattureInCloudServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->loadRoutesFrom(realpath(__DIR__ . '/fattureincloud-routes.php'));
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'hubspot');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'fattureincloud');
 
         $this->publishes([
             __DIR__ . '/../config/fattureincloud.php' => config_path('fattureincloud.php'),
