@@ -7,7 +7,7 @@ use HubSpot\Factory;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-class FattureInCloud
+class FattureInCloudService
 {
     // public $client;
     // public $user_id;

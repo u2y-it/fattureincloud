@@ -37,6 +37,6 @@ class FattureInCloudController extends Controller
 
          Session::flash('message', 'Token generato: ' . $token->access_token);
 
-        return redirect()->route('hubspot.auth');
+        return redirect()->route('fattureincloud.auth');
     }
 }
