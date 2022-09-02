@@ -11,10 +11,9 @@ use U2y\FattureInCloud\Models\FattureInCloudToken;
 class FattureInCloudService
 {
     private $config;
-    public function __construct($config = null)
+    public function __construct($config = null,FattureInCloudToken $token)
     {
         if (!$config) {
-            $token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
             $config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
         }
         $this->config = $config;
