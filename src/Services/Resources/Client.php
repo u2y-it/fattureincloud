@@ -17,7 +17,7 @@ class Client
 
     public function __construct($config)
     {
-        $this->client = new ClientsApi(
+        $this->client = new ClientsApi(null,
             $config
         );
     }
