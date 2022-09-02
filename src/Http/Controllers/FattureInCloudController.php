@@ -15,7 +15,7 @@ class FattureInCloudController extends Controller
         $token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
         $oauth = new OAuth2AuthorizationCodeManager(config("fattureincloud.client_id"), config("fattureincloud.client_secret"), route('fattureincloud.auth_callback'));
         return view('fattureincloud::oauth')
-            ->with('hubspot_url', $oauth->getAuthorizationUrl(config("fattureincloud.scopes"), csrf_token()))
+            ->with('fattureincloud_url', $oauth->getAuthorizationUrl(config("fattureincloud.scopes"), csrf_token()))
             ->with('token', $token);
     }
 
