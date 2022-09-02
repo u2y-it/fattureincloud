@@ -13,18 +13,20 @@ class FattureInCloudController extends Controller
     public function index()
     {
         $token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
-        $oauth = new OAuth2AuthorizationCodeManager("CLIENT_ID", "CLIENT_SECRET", $redirectUri);
+        $oauth = new OAuth2AuthorizationCodeManager(config("fattureincloud.client_id"), config("fattureincloud.client_secret"), route('fattureincloud.auth_callback'));
         return view('hubspot::oauth')
-            ->with('hubspot_url', OAuth2::getAuthUrl(
-                config('hubspot.client_id'),
-                route('hubspot.auth_callback'),
-                config('hubspot.scopes')
-            ))
+            ->with('hubspot_url', $oauth->getAuthorizationUrl(config("fattureincloud.scopes"), csrf_token()))
             ->with('token', $token);
     }
 
     public function callback(Request $request)
     {
+
+        $code = $request->get('code');
+        $state = $request->get('state');
+        if ($state !== csrf_token()) {
+            return redirect()->route('fattureincloud.index')->with('error', 'Invalid state');
+        }
         // try {
         //     $token = HubspotService::requestAndSaveToken($request->code);
         // } catch (\Exception $e) {
