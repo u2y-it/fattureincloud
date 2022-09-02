@@ -1,0 +1,25 @@
+{
+    "name": "u2y/fattureincloud",
+    "description": "Fatture in cloud Package by Up2You",
+    "authors": [
+        {
+            "name": "RiccardoRomoliU2Y",
+            "homepage": "https://u2y.io"
+        }
+    ],
+    "require": {
+        "fattureincloud/fattureincloud-php-sdk": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "U2y\\FattureInCloud\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "U2y\\Hubspot\\FattureInCloudServiceProvider"
+            ]
+        }
+    }
+}
