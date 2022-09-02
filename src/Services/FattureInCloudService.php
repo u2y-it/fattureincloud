@@ -9,25 +9,25 @@ use Illuminate\Support\Str;
 
 class FattureInCloudService
 {
-    // public $client;
-    // public $user_id;
-    // public function __construct($client = null)
-    // {
-    //     if (!$client) {
-    //         $client = $this->initClient();
-    //     }
-    //     $this->client = $client;
-    // }
+    private $config;
+    public function __construct($config = null)
+    {
+        if (!$config) {
+            $token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
+            $config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
+        }
+        $this->config = $config;
+    }
 
-    // public function __call($name, $arguments = null)
-    // {
-    //     $classname = 'U2y\\Hubspot\\Services\\Resources\\' . Str::ucfirst(Str::camel($name));
-    //     if (class_exists($classname)) {
-    //         return new $classname($this->client);
-    //     }
+    public function __call($name, $arguments = null)
+    {
+        $classname = 'U2y\\FattureInCloud\\Services\\Resources\\' . Str::ucfirst(Str::camel($name));
+        if (class_exists($classname)) {
+            return new $classname($this->config);
+        }
 
-    //     return $this->$name($arguments);
-    // }
+        return $this->$name($arguments);
+    }
 
     // public function initClient()
     // {
