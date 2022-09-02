@@ -2,10 +2,11 @@
 
 namespace U2y\FattureInCloud\Services;
 
-use U2y\FattureInCloud\Models\FattureInCloudToken;
 use HubSpot\Factory;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use FattureInCloud\Configuration;
+use Illuminate\Support\Facades\Http;
+use U2y\FattureInCloud\Models\FattureInCloudToken;
 
 class FattureInCloudService
 {
