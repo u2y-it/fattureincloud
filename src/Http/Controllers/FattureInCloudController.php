@@ -25,7 +25,7 @@ class FattureInCloudController extends Controller
         $code = $request->get('code');
         $state = $request->get('state');
         if ($state !== csrf_token()) {
-            return redirect()->route('fattureincloud.index')->with('error', 'Invalid state');
+            return json_encode(['error' => 'Invalid CSRF token']);
         }
         // try {
         //     $token = HubspotService::requestAndSaveToken($request->code);
