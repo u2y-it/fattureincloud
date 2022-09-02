@@ -13,7 +13,7 @@ class CreateFicTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('fic_tokens', function (Blueprint $table) {
+        Schema::create('fatture_in_cloud_tokens', function (Blueprint $table) {
             $table->id();
             $table->text('access_token');
             $table->text('refresh_token');
@@ -29,6 +29,6 @@ class CreateFicTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fic_tokens');
+        Schema::dropIfExists('fatture_in_cloud_tokens');
     }
 }
