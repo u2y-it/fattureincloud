@@ -2,10 +2,12 @@
 
 namespace U2y\FattureInCloud\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use U2y\FattureInCloud\Services\FattureInCloud;
 use U2y\FattureInCloud\Models\FattureInCloudToken;
+use U2y\FattureInCloud\Services\FattureInCloudService;
 use FattureInCloud\OAuth2\OAuth2AuthorizationCodeManager;
 
 class FattureInCloudController extends Controller
@@ -24,17 +26,17 @@ class FattureInCloudController extends Controller
 
         $code = $request->get('code');
         $state = $request->get('state');
-        if ($state !== csrf_token()) {
+        if ($state !== csrf_token()) { // TODO: middleware
             return json_encode(['error' => 'Invalid CSRF token']);
         }
-        // try {
-        //     $token = HubspotService::requestAndSaveToken($request->code);
-        // } catch (\Exception $e) {
-        //     echo "Exception when calling access_tokens_api->get_access_token: ", $e->getMessage();
-        // }
+        try {
+        $token = FattureInCloudService::requestAndSaveToken($code);
+        } catch (\Exception $e) {
+            return json_encode(['error' => $e->getMessage()]);
+        }
 
-        // Session::flash('message', 'Token generato: ' . $token->access_token);
+         Session::flash('message', 'Token generato: ' . $token->access_token);
 
-        // return redirect()->route('hubspot.auth');
+        return redirect()->route('hubspot.auth');
     }
 }
