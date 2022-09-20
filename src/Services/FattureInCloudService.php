@@ -11,7 +11,7 @@ use U2y\FattureInCloud\Models\FattureInCloudToken;
 class FattureInCloudService
 {
     private $config;
-    public function __construct($config = null,FattureInCloudToken $token)
+    public function __construct(FattureInCloudToken $token,$config = null)
     {
         if (!$config) {
             $config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
