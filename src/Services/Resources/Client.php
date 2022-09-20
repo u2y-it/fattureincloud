@@ -39,7 +39,7 @@ class Client
         return $this->client->createClient($company_id, $data);
     }
 
-    public function delete($company_id, $client_id): CreateClientResponse
+    public function delete($company_id, $client_id)
     {
         return $this->client->deleteClient($company_id, $client_id);
     }
