@@ -33,6 +33,11 @@ class Client
         return $this->client->createClient($company_id, $data);
     }
 
+    public function delete($company_id, $client_id): CreateClientResponse
+    {
+        return $this->client->deleteClient($company_id, $client_id);
+    }
+
     // public function formattedListByStages(array $stages, array $options = [])
     // {
     //     return $this->formatResponse($this->listByStages($stages, $options));
