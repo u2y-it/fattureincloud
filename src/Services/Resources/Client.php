@@ -34,9 +34,9 @@ class Client
         return $this->client->listClients($company_id, null, null, null, $page, $per_page, null);
     }
 
-    public function listWithFields($company_id, array $fields, $per_page = 10, $page = 1, string $query): ListClientsResponse
+    public function listWithQuery($company_id, $per_page = 10, $page = 1, array $query): ListClientsResponse
     {
-        return $this->client->listClients($company_id, $fields, null, null, $page, $per_page, $query);
+        return $this->client->listClients($company_id, null, null, null, $page, $per_page, $query);
     }
 
     public function create($company_id, array $data): CreateClientResponse
