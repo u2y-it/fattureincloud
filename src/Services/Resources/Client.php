@@ -34,6 +34,11 @@ class Client
         return $this->client->listClients($company_id, null, null, null, $page, $per_page, null);
     }
 
+    public function listWithFields($company_id, array $fields, $per_page = 10, $page = 1): ListClientsResponse
+    {
+        return $this->client->listClients($company_id, $fields, null, null, $page, $per_page, null);
+    }
+
     public function create($company_id, array $data): CreateClientResponse
     {
         return $this->client->createClient($company_id, $data);
