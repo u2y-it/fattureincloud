@@ -6,6 +6,7 @@ use Exception;
 use Http;
 use FattureInCloud\Api\ClientsApi;
 use FattureInCloud\Model\ListClientsResponse;
+use FattureInCloud\Model\CreateClientResponse;
 
 class Client
 {
@@ -27,7 +28,7 @@ class Client
         return $this->client->listClients($company_id, null, null, null, $page, $per_page, null);
     }
 
-    public function create($company_id, array $data)
+    public function create($company_id, array $data): CreateClientResponse
     {
         return $this->client->createClient($company_id, $data);
     }
