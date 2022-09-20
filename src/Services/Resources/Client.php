@@ -5,6 +5,7 @@ namespace U2y\FattureInCloud\Services\Resources;
 use Exception;
 use Http;
 use FattureInCloud\Api\ClientsApi;
+use FattureInCloud\Model\GetClientResponse;
 use FattureInCloud\Model\ListClientsResponse;
 use FattureInCloud\Model\CreateClientResponse;
 
@@ -23,7 +24,7 @@ class Client
         );
     }
 
-    public function get($company_id, $client_id): ListClientsResponse
+    public function get($company_id, $client_id): GetClientResponse
     {
         return $this->client->getClient($company_id, $client_id);
     }
