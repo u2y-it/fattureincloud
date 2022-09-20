@@ -23,6 +23,11 @@ class Client
         );
     }
 
+    public function get($company_id, $client_id): ListClientsResponse
+    {
+        return $this->client->getClient($company_id, $client_id);
+    }
+
     public function list($company_id, $per_page = 10, $page = 1): ListClientsResponse
     {
         return $this->client->listClients($company_id, null, null, null, $page, $per_page, null);
