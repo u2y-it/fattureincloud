@@ -9,7 +9,11 @@
         }
     ],
     "require": {
-        "fattureincloud/fattureincloud-php-sdk": "^2.0"
+        "php": ">=8.1",
+        "fattureincloud/fattureincloud-php-sdk": "^2.0",
+        "illuminate/routing": "^9",
+        "illuminate/session": "^9",
+        "illuminate/support": "^9"
     },
     "autoload": {
         "psr-4": {
