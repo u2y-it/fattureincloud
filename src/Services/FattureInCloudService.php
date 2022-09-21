@@ -18,12 +18,13 @@ class FattureInCloudService
     //     }
     //     $this->config = $config;
     // }
-    public function __construct($client = null)
+    public function __construct(?FattureInCloudToken $token = null)
     {
-        if (!$client) {
-            $client = $this->initClient();
+        if (!$token) {
+            $this->initClient();
+        } else {
+            $this->config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
         }
-        // $this->client = $client;
     }
 
     public function __call($name, $arguments = null)
