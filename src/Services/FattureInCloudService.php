@@ -12,6 +12,7 @@ class FattureInCloudService
 {
     private $config;
     private $token;
+    private $db_connection;
     // public function __construct(FattureInCloudToken $token,$config = null)
     // {
     //     if (!$config) {
@@ -21,6 +22,10 @@ class FattureInCloudService
     // }
     public function __construct(?FattureInCloudToken $token = null)
     {
+        if ($token) {
+            $this->db_connection = $token->getConnectionName();
+        }
+
         $this->initClient($token);
     }
 
@@ -36,7 +41,7 @@ class FattureInCloudService
 
     public function initClient(?FattureInCloudToken $token = null)
     {
-        $last_token = $token ?? FattureInCloudToken::orderBy('expire_at', 'desc')->first();
+        $last_token = $token ?? FattureInCloudToken::on($this->db_connection)->orderBy('expire_at', 'desc')->first();
         if (!$last_token) {
             throw new \Exception('No Fatture in cloud token found. Please generate one');
         }
@@ -44,11 +49,10 @@ class FattureInCloudService
         if ($last_token->expire_at <= now()->subMinute()) {
             // refresh del token
             $response = self::refreshToken($last_token->refresh_token);
-            $last_token = $this->saveTokenByResponse($response);
+            $last_token = $this->saveTokenByResponse($response, $this->db_connection);
         }
         $this->config = Configuration::getDefaultConfiguration()->setAccessToken($last_token->access_token);
         return;
-        // return Factory::createWithAccessToken($last_token->access_token);
     }
 
     public static function requestAndSaveToken(string $code)
@@ -77,10 +81,10 @@ class FattureInCloudService
         return $response;
     }
 
-    public static function saveTokenByResponse($response)
+    public static function saveTokenByResponse($response, $db_connection = null)
     {
         $resp = (object) $response->json();
-        return FattureInCloudToken::create([
+        return FattureInCloudToken::on($db_connection)->create([
             'access_token' => $resp->access_token,
             'refresh_token' => $resp->refresh_token,
             'expire_at' => now()->addSeconds($resp->expires_in)
@@ -96,7 +100,7 @@ class FattureInCloudService
                 'client_secret' => config('fattureincloud.client_secret'),
                 'refresh_token' => $refresh_token
             ]);
-
+            
             $response->throwIf($response->failed());
         } catch (\Throwable $th) {
             throw $th;
