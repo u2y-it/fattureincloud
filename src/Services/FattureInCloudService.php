@@ -11,6 +11,7 @@ use U2y\FattureInCloud\Models\FattureInCloudToken;
 class FattureInCloudService
 {
     private $config;
+    private $token;
     // public function __construct(FattureInCloudToken $token,$config = null)
     // {
     //     if (!$config) {
@@ -20,11 +21,7 @@ class FattureInCloudService
     // }
     public function __construct(?FattureInCloudToken $token = null)
     {
-        if (!$token) {
-            $this->initClient();
-        } else {
-            $this->config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
-        }
+        $this->initClient($token);
     }
 
     public function __call($name, $arguments = null)
@@ -37,9 +34,9 @@ class FattureInCloudService
         return $this->$name($arguments);
     }
 
-    public function initClient()
+    public function initClient(?FattureInCloudToken $token = null)
     {
-        $last_token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
+        $last_token = $token ?? FattureInCloudToken::orderBy('expire_at', 'desc')->first();
         if (!$last_token) {
             throw new \Exception('No Fatture in cloud token found. Please generate one');
         }
