@@ -11,12 +11,19 @@ use U2y\FattureInCloud\Models\FattureInCloudToken;
 class FattureInCloudService
 {
     private $config;
-    public function __construct(FattureInCloudToken $token,$config = null)
+    // public function __construct(FattureInCloudToken $token,$config = null)
+    // {
+    //     if (!$config) {
+    //         $config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
+    //     }
+    //     $this->config = $config;
+    // }
+    public function __construct($client = null)
     {
-        if (!$config) {
-            $config = Configuration::getDefaultConfiguration()->setAccessToken($token->access_token);
+        if (!$client) {
+            $client = $this->initClient();
         }
-        $this->config = $config;
+        // $this->client = $client;
     }
 
     public function __call($name, $arguments = null)
@@ -29,20 +36,23 @@ class FattureInCloudService
         return $this->$name($arguments);
     }
 
-    // public function initClient()
-    // {
-    //     $last_token = HubspotToken::orderBy('expire_at', 'desc')->first();
-    //     if (!$last_token) {
-    //         throw new \Exception('Not Hubspot token found. Please generate one');
-    //     }
+    public function initClient()
+    {
+        $last_token = FattureInCloudToken::orderBy('expire_at', 'desc')->first();
+        if (!$last_token) {
+            throw new \Exception('No Fatture in cloud token found. Please generate one');
+        }
 
-    //     if ($last_token->expire_at <= now()->subMinute()) {
-    //         // refresh del token
-    //         $response = self::refreshToken($last_token->refresh_token);
-    //         $last_token = $this->saveTokenByResponse($response);
-    //     }
-    //     return Factory::createWithAccessToken($last_token->access_token);
-    // }
+        if ($last_token->expire_at <= now()->subMinute()) {
+            // refresh del token
+            $response = self::refreshToken($last_token->refresh_token);
+            $last_token = $this->saveTokenByResponse($response);
+        }
+        $this->config = Configuration::getDefaultConfiguration()->setAccessToken($last_token->access_token);
+        return;
+        // return Factory::createWithAccessToken($last_token->access_token);
+    }
+
     public static function requestAndSaveToken(string $code)
     {
         $response = self::requestToken($code);
